@@ -1,0 +1,139 @@
+doctype html
+html
+	head
+		meta(charset='UTF-8')
+		meta(name='viewport',content='width=device-width, initial-scale=1.0')
+		meta(property='og:url', content='#{site_url()}')
+		//- meta(property='og:type', content='article')
+		meta(property='og:title', content='Jendela Eksperimen')
+		meta(property='og:description', content='Yuk kreasikan eksperimenmu dengan video greeting dari GoodDay')
+		meta(property='og:image', content='#{site_url()}/img/good-day.png')
+
+		title= title
+		link(rel='shortcut icon', href='#{site_url()}/favicon.ico', type='image/x-icon')
+		link(rel='icon', href='#{site_url()}/favicon.ico', type='image/x-icon')
+		link(rel='stylesheet', href='#{site_url()}/stylesheets/main.css')
+		link(rel='stylesheet', href='#{site_url()}/stylesheets/jquery.mCustomScrollbar.css')
+		link(rel='stylesheet', href='#{site_url()}/stylesheets/pace.css')
+		link(rel='stylesheet', href='#{site_url()}/stylesheets/rangeslider.css')
+		link(rel='stylesheet', href='#{site_url()}/stylesheets/slicknav.css')
+		link(rel='stylesheet', href='#{site_url()}/stylesheets/selectric.css')
+		link(rel='stylesheet', href='#{site_url()}/stylesheets/add.css')
+		block style
+	body
+		div.loader
+			div.box
+				p Cie… Gak sabar tuh.
+				i.loading
+		div.wrapper
+			block line
+			div#header
+				div.wrapper-register-login
+					if loged_in && user_group=='user'
+						a(href="#{site_url()}/users/logout") logout
+					else
+						a#register-btn(href="javascript:void(0);") register
+						|/ 
+						a#login-btn(href="javascript:void(0);") login
+				if !loged_in || user_group!='user'
+					div.side-popup#login-popup
+						a.btn-close#close-login(href="javascript:void(0);")
+						div.wrapper-popup
+							div.box.bg-white
+								input.text-input(type="text",name="email",placeholder="email address",autocomplete="off")
+							p.error_msg.email_error(style="display:none")
+							div.box.bg-white
+								input.text-input(type="password",name="pass",class="text-input",placeholder="password")
+							p.error_msg.pass_error(style="display:none")
+							div.box
+								p
+									a.forgot-password(href="/forgot") forgot password
+							p.error_msg.global_error
+							div.box
+								p
+									a.login(href="") LOGIN
+							div.box.mrgb10
+								p.or-text or
+							div.box
+								p
+									a.register(href="") REGISTER
+					div.side-popup#register-popup
+						a.btn-close#close-register(href="javascript:void(0)")
+						div.wrapper-popup
+							div.box.bg-white
+								input.text-input(type="text",name="name",placeholder="name*")
+							p.error_msg.name_error(style="display:none")
+							div.box.bg-white
+								input.text-input(type="text" name="email" placeholder="email address*")
+							p.error_msg.email_error(style="display:none")
+							div.box.bg-white
+								input.text-input(type="password",name="pass",placeholder="password*")
+							p.error_msg.pass_error(style="display:none")
+							div.box.bg-white
+								input.text-input(type="password",name="conf_pass",placeholder="confirm password*")
+							p.error_msg.conf_pass_error(style="display:none")
+							div.box.bg-white
+								input.text-input(type="text",name="phone",placeholder="phone*")
+							p.error_msg.phone_error(style="display:none")
+							div.box.mrgb10
+								div.select-box
+									select(name="city")
+										option(value="") city
+										each val in cities
+											option(value=val.name)= val.name
+							p.error_msg.city_error(style="display:none")
+							p.error_msg.global_error
+							div.box
+								p
+									a.btn-submit(href="") SUBMIT
+				div.nav-wrapper
+					a.menu-mobile(href="javascript:void(0);") menu
+					ul#menu
+						li(class={active: url[1] == ''})
+							a(href="#{site_url()}/") home
+						li(class={active: url[1] === 'experiment'})
+							a#start-experiment(href="#{site_url()}/experiment") start experiment
+			
+			block content
+	script(type='text/javascript').
+		var _csrf = "#{_csrf}";
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+		ga('create', 'UA-89558388-1', 'auto');
+		ga('send', 'pageview');
+	script(src='#{site_url()}/javascripts/jquery.min.js')
+	script(src='#{site_url()}/javascripts/jquery.mousewheel.min.js')
+	script(src='#{site_url()}/javascripts/modernizr.custom.js')
+	//- script(src='/javascripts/jquery-ui.js')
+	script(src='#{site_url()}/javascripts/imagesloaded.pkgd.js')
+	script(src='#{site_url()}/javascripts/jquery.ba-throttle-debounce.js')
+	script(src='#{site_url()}/javascripts/jquery.mCustomScrollbar.min.js')
+	script(src='#{site_url()}/javascripts/jquery.mCustomScrollbar.concat.min.js')
+	script(src='#{site_url()}/javascripts/rangeslider.js')
+	script(src='#{site_url()}/javascripts/rangeslider.js')
+	script(src='#{site_url()}/javascripts/jquery.slicknav.js')
+	script(src='#{site_url()}/javascripts/jquery.selectric.js')
+	script(src='#{site_url()}/javascripts/custom.js')
+	script(src='#{site_url()}/javascripts/main.js')
+	block script
+	script(type='text/javascript').
+		$(document).ready(function(){
+			$.ajax({
+				type:"GET",
+				url:'#{site_url()}/stylesheets/main.css',
+				complete:function(){
+					$('.loader').hide();
+				}
+			})
+			$('#menu #start-experiment').click(function(e){
+				e.preventDefault();
+				var _src = $(this).attr('href');
+				ga('send', 'event', 'button', 'click', 'Start Experimen', {
+					'transport': 'beacon',
+					'hitCallback': function(){window.location.href = _src}
+				});
+				return false;
+			})
+		})	

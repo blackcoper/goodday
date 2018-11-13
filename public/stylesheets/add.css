@@ -1,0 +1,143 @@
+.wrapper .wrapper-content.frame ~ #footer{
+	display: block;
+	background-size: cover;
+	position: absolute;
+	width: 100%;
+	bottom: 0;
+	left: 0;
+}
+
+@media screen and (max-width: 768px){
+	.wrapper .wrapper-content.frame .wrapper-cloud-right-center{
+		display: none;
+	}
+	
+	.wrapper .wrapper-content.frame .wrapper-frame-absolute.syarat-ketentuan:before,
+	.wrapper .wrapper-content.frame .wrapper-frame-absolute.syarat-ketentuan:after{
+		position: absolute;
+		display: block;
+		width: 1px;
+		height: 300px;
+		top: 0;
+		left: 0;
+		right: 0;
+		margin: auto;
+		background-color: #fff;
+	}
+
+	.wrapper .wrapper-content.frame ~ #footer{
+		background-size: auto 100%;
+		background-repeat: repeat-x;
+	}
+
+	.wrapper .wrapper-content.frame .wrapper-good-day{
+		left: 0;
+		right: 0;
+		bottom: 0;
+		margin: auto;
+	}
+
+	.wrapper #header .nav-wrapper {
+		z-index: -1;
+	}
+}
+
+@media screen and (max-width: 640px) {
+	.wrapper .wrapper-content.frame .wrapper-frame-absolute.syarat-ketentuan{
+		background-image: url('../img/bg-white-m.png');
+		width: 470px;
+		height: 530px;
+		margin-left: -235px;
+		margin-top: -265px;
+	}
+
+	.wrapper .wrapper-content.frame .wrapper-frame-absolute.syarat-ketentuan .wrapper-syarat-ketentuan .form-reset{
+		padding: 30px 40px 30px 30px;
+	  display: -webkit-box;
+	  display: -ms-flexbox;
+	  display: -webkit-flex;
+	  display: flex;
+	  -webkit-box-align: center;
+	  -ms-flex-align: center;
+	  -webkit-align-items: center;
+	  align-items: center;
+
+	}
+
+	.wrapper .wrapper-content.frame .wrapper-frame-absolute.syarat-ketentuan .wrapper-syarat-ketentuan .form-reset form .box {
+		margin-bottom: 10px;
+	}
+
+	.wrapper .wrapper-content.frame .wrapper-frame-absolute.syarat-ketentuan .wrapper-syarat-ketentuan .form-reset form .box .btn-yellow{
+		float: none;
+		display: block;
+		margin: auto;
+	}
+	.wrapper .wrapper-content.frame .wrapper-frame-absolute.syarat-ketentuan .wrapper-syarat-ketentuan .form-reset form .box p{
+		letter-spacing: 0;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.wrapper .wrapper-content.frame .wrapper-frame-absolute.syarat-ketentuan{
+		width: 310px;
+		height: 350px;
+		margin-left: -150px;
+		margin-top: -175px;
+	}
+	.wrapper .wrapper-content.frame .wrapper-frame-absolute.syarat-ketentuan .wrapper-syarat-ketentuan .form-reset{
+		padding: 0 5px 0 0;
+	}
+}
+
+@media screen and (max-width: 320px) {
+	.wrapper .wrapper-content.frame .wrapper-frame-absolute.syarat-ketentuan{
+		width: 300px;
+		height: 350px;
+		margin-left: -150px;
+		margin-top: -175px;
+		font-size: 12px;
+	}
+	
+	.wrapper .wrapper-content.frame .wrapper-frame-absolute.syarat-ketentuan .wrapper-syarat-ketentuan .form-reset form .box p{
+		font-size: 12px;
+	}
+
+}
+@media screen and (min-width: 1171px) {
+	.wrapper .wrapper-content .wrapper-good-day {
+		width: 480px;
+	}
+	.wrapper .wrapper-content .wrapper-good-day {
+		right: 5px;
+	}
+	.win .wrapper #header .nav-wrapper ul li a {
+		line-height: 17px;
+	}	
+}
+
+.wrapper #header .side-popup .wrapper-popup .box p a.login,
+.wrapper #header .side-popup .wrapper-popup .box p a.register,
+.wrapper #header .side-popup .wrapper-popup .box .text-input,
+.wrapper #header .side-popup .wrapper-popup .box.bg-white .text-input,
+.wrapper #header .side-popup .wrapper-popup .box p a.btn-submit,
+.selectric span.label,
+#render .right #form-share .btn #submit-share {
+	font-family: 'DINCond-Bold', sans-serif;
+}
+
+.wrapper .wrapper-content .wrapper-cloud-left-bottom {
+	margin-left: 0px;
+}
+
+.wrapper #header .slicknav_menu a.slicknav_btn {
+	margin-top: 15px;
+}	
+
+.slicknav_nav {
+	padding-top: 20px;
+}
+
+.loader {
+	display: block;
+}

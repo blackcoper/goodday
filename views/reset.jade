@@ -1,0 +1,44 @@
+
+extends layout
+
+block content
+	div.wrapper-content.frame
+		
+		//wrapper colud left top
+		div.wrapper-cloud-left-top
+			
+		//wrapper-bird
+		div.wrapper-bird
+			
+		//wrapper colud left top
+		div.wrapper-cloud-left-bottom
+			
+		div.wrapper-frame-absolute.syarat-ketentuan
+			div.wrapper-syarat-ketentuan
+				div.form-reset
+					
+					form(method="POST")
+						div.box
+							p Masukkin password baru kamu:	
+						div.box
+							input(type="password", name="pass", placeholder="Password", class="text-input")
+						div.box
+							p Confirm lagi password barunya:
+						div.box
+							input(type="password", name="conf_pass", placeholder="Confirm Password", class="text-input")
+						div.box
+							input(type="hidden", name="_csrf", value="#{_csrf}")
+							button(type="submit").btn-yellow.left reset
+						div.box.message
+							if errors
+								each error in errors
+									p=error.msg
+
+		//wrapper cloud right center
+		div.wrapper-cloud-right-center
+			
+		//wrapper good day
+		div.wrapper-good-day
+			img(src="#{site_url()}/img/good-day.png")
+				
+	div#footer

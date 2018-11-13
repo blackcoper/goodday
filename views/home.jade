@@ -1,0 +1,76 @@
+extends layout
+
+block line
+	<!-- line white here -->
+	div.line-sun
+	div.line-good-day-left
+	div.line-good-day-right
+	div.line-good-day-cloud
+
+block content
+	div.wrapper-content
+		//wrapper colud left top
+		div.wrapper-cloud-left-top
+			
+		//wrapper colud left top
+		div.wrapper-cloud-left-bottom
+
+		div.wrapper-window-maudy
+			div.window-maudy
+				//wraper window
+				div.wrapper-window
+					div.wrapper-contents
+
+						//wrapper kopi
+						div.wrapper-kopi
+							div.wrapper-kopi-good-day
+								div.logo
+									img(src="img/kopi-good-day.png")
+								div.desc
+									|window 
+									span of
+									|experiment
+
+						//wrapper-bird
+						div.wrapper-bird
+
+						//wrapper start
+						div.wrapper-start
+							div.start-content
+								a#start-now(href="#{site_url()}/experiment") 
+									span start now 
+									i(class="arrow")
+				
+				//wrapper maudy
+				div.wrapper-maudy
+					div.wrapper-contents
+						div.maudy
+							img(src="img/maudy.png")
+						div.wrapper-colud-maudy
+						div.bubble-maudy
+							div.display-table
+								div.display-table-cell
+									p Saatnya selayar berdua bareng aku, maudy ayunda! Ciptain eksperimen seru versi kamu, di sini!"
+		//wrapper cloud right center
+		div.wrapper-cloud-right-center
+
+		div.wrapper-cloud-bottom
+		//wrapper good day
+		div.wrapper-good-day
+			img(src="img/good-day.png")
+block script
+	script(type='text/javascript').
+		$(document).ready(function(){
+			$('#start-now').click(function(e){
+				e.preventDefault();
+				var _src = $(this).attr('href');
+				ga('send', 'event', 'button', 'click', 'Start Now', {
+					'transport': 'beacon',
+					'hitCallback': function(){window.location.href = _src}
+				});
+				return false;
+			})
+			if(window.location.hash == '#login'){
+				$('#login-btn').trigger('click')
+			}
+		})

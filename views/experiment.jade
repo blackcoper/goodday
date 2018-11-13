@@ -1,0 +1,186 @@
+extends layout
+
+block style
+	link(rel='stylesheet', href='#{site_url()}/stylesheets/style.css')
+
+block script
+	script(src='#{site_url()}/javascripts/easeljs-0.8.2.min.js')
+	script(src='#{site_url()}/javascripts/tweenjs-0.6.2.min.js')
+	script(src='#{site_url()}/javascripts/vendor/jquery.ui.widget.js')
+	script(src='#{site_url()}/javascripts/jquery.iframe-transport.js')
+	script(src='#{site_url()}/javascripts/jquery.fileupload.js')
+	script(src='#{site_url()}/javascripts/jquery.fileDownload.js')
+	script(src='#{site_url()}/javascripts/utils.js')
+	//- script(src='/javascripts/clmtrackr.min.js')
+	//- script(src='/javascripts/model_pca_20_svm.js')
+	script#clmtrackr
+	script#modelpca
+	script#socketIO
+	script(type='text/javascript').
+		$(document).ready(function(){
+			$('#clmtrackr').attr('src','#{site_url()}/javascripts/clmtrackr.min.js')
+			$('#modelpca').attr('src','#{site_url()}/javascripts/model_pca_20_svm.js')
+			//- $.ajaxSetup({cache:true})
+			//- $.getScript(window.location.origin+'/javascripts/clmtrackr.min.ex.js')
+			//- $.getScript(window.location.origin+'/javascripts/model_pca_20_svm.js')
+		})
+		
+		var site_url = "#{site_url()}",
+		_fb_appid = "#{fb_appid}",
+		_fb_text = "#{fb_text}",
+		_tw_text = "#{tw_text}",
+		_csrf = "#{_csrf}",
+		_data = '!{data}' == '' ? null : JSON.parse('!{data}'),
+		port = window.location.protocol == "http:" ? '#{port_io_http}' : '#{port_io_https}',
+		init = false,
+		ioadmin;
+		$('#socketIO').attr('src','#{site_url()}/javascripts/socket.io-1.4.5.js')
+		var io_ready = function(callback){
+			if(typeof(io)=='undefined'){
+				return setTimeout(function(){
+					io_ready(callback);
+				},100);
+			}else{
+				if(!ioadmin)ioadmin = io('/experiment');
+				var wait_io_id = function(){
+					if(typeof(ioadmin.id) == 'undefined'){
+						setTimeout(function(){
+							wait_io_id();
+						},100)
+					}else{
+						if(typeof(callback)== 'function')callback();
+					}
+				}
+				wait_io_id();
+			}
+		}
+	script(src='#{site_url()}/javascripts/max.js')
+	script(src='#{site_url()}/javascripts/personalize.js')
+	script(src='#{site_url()}/javascripts/thirdparty/confetti.js')
+	script(src='#{site_url()}/javascripts/thirdparty/confetti2.js')
+	script(src='#{site_url()}/javascripts/thirdparty/plasma.js')
+	script(src='#{site_url()}/javascripts/thirdparty/fireworks.js')
+block line
+	<!-- line white  here -->
+	div.line-cloud-left
+	div.line-frame-left
+	div.line-header-left
+	div.line-header-right
+	div.line-frame-right
+	div.line-cloud-right
+
+block content
+	div.wrapper-content.frame
+		<!-- wrapper colud left top -->
+		div.wrapper-cloud-left-top
+		<!-- wrapper colud left top -->
+		div.wrapper-cloud-left-bottom
+		div.wrapper-ganteng-cantik
+			div.wrapper-frame-absolute
+				<!-- wrapper-bird -->
+				div.wrapper-bird
+				div.wrapper-frames
+					div.cloud-top-left
+					div.cloud-rainbow-right
+					div.header
+						div.step#step 1/1
+					div.wrapper-frame-content
+						div.display-table#gender
+							div.display-table-cell
+								div.bg-ganteng-cantik
+									a#selectMale(href="javascript:void(0);")
+								div.bg-ganteng-cantik
+									a#selectFemale(href="javascript:void(0);")
+						div#result
+							video#video1(width="512",height="512",preload="auto",loop="loop")
+							canvas#image(width="512",height="512")
+							canvas#process(width="512",height="512")
+							canvas#preview(width="512",height="512")
+							div#tools
+								div.box
+									label(for="scale") Scale
+									input#scale(type="range",min="0",max="100",value="0", data-orientation="horizontal", data-rangeSlider)
+								div.box
+									label(for="rotate") Rotate
+									input#rotate(type="range",min="0",max="100",value="0", data-orientation="horizontal", data-rangeSlider)
+							div#panels
+								div.box
+									button#previewMouthPosition preview
+
+							div#text
+								div.text-center
+									p done! Done! click next step to continue! 
+										br 
+										| or previous page to create new avatar.
+						div#source
+							div.wrapper-take-browse
+								div.btn
+									button#resetPicture Reset Picture
+								div.btn
+									button#takePicture Take Picture
+								div.or
+									span or
+								div.input-image
+									input(type="file",name="image",class="inputfile",id="file-1")
+									label(for="file-1") browse foto
+								div.info
+									Upload jpg or png file of up to 1MB.
+						div#chooseVideo
+						div#chooseAccessories
+						#render
+							div.left
+								video#player(width="1",height="1")
+								canvas#overlay(width="1",height="1")
+								i.played
+								div.btn
+									div.wrapper-btn
+										div.share-btn
+											span share on										
+											button#share-fb facebook
+											#share-tw
+										div.download-btn
+											button#download download
+							div.right
+								#form-share
+									#tw-text-remain 
+										span 0
+										| characters left
+									textarea#text-share
+									div.btn
+										a#skip-share(href='javascript:void(0);') skip
+										a#submit-share.button(href="javascript:void(0);") done
+					div.cloud-bottom-left
+					div.cloud-bottom-right
+				div.wrapper-btn
+					div#backtoGender.btn.back
+						a.button(href="javascript:void(0);") back
+					div#backtoPicture.btn.back
+						a.button(href="javascript:void(0);") back
+					div#backtoHeadPosition.btn.back
+						a.button(href="javascript:void(0);") back
+					div#backtoCreateNew.btn.back
+						a.button(href="javascript:void(0);") back
+					div#backtoComplete.btn.back
+						a.button(href="javascript:void(0);") back
+					div#backtoChooseVideo.btn.back
+						a.button(href="javascript:void(0);") back
+					div#saveGender.btn.next
+						a.button(href="javascript:void(0);") next
+					div#savePicture.btn.next
+						a.button(href="javascript:void(0);") next
+					div#saveHeadPosition.btn.next
+						a.button(href="javascript:void(0);") next
+					div#saveMouthPosition.btn.next
+						a.button(href="javascript:void(0);") next
+					div#continue.btn.next
+						a.button(href="javascript:void(0);") next
+					div#saveChooseVideo.btn.next
+						a.button(href="javascript:void(0);") next
+					div#saveChooseAccessories.btn.next
+						a.button(href="javascript:void(0);") next
+			<!-- wrapper cloud right center -->
+			div.wrapper-cloud-right-center
+		div.wrapper-cloud-bottom
+		<!-- wrapper good day -->
+		div.wrapper-good-day.center
+			img(src="#{site_url()}/img/good-day.png")

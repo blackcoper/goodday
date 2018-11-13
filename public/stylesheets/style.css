@@ -1,0 +1,124 @@
+#source,#resetPicture,#result,#process,#video1,#preview,#chooseVideo,#chooseAccessories,#render,
+#backtoGender,#backtoPicture,#backtoHeadPosition,#backtoCreateNew,#backtoComplete,
+#backtoChooseVideo,#savePicture,#saveHeadPosition,#saveMouthPosition,#continue,
+#saveChooseVideo,#saveChooseAccessories{
+  display: none;
+}
+
+/*#gender #selectMale {
+  width: 250px;
+  height: 250px;
+  background-image: url('../images/male.png');
+  cursor: pointer;
+  float: left;
+}
+#gender #selectMale:hover,#gender .active#selectMale{
+  background-image: url('../images/active-male.png');
+}
+#gender #selectFemale {
+  width: 250px;
+  height: 250px;
+  background-image: url('../images/female.png');
+  cursor: pointer;
+  float: left;
+}
+#gender #selectFemale:hover,#gender .active#selectFemale {
+  background-image: url('../images/active-female.png');
+}*/
+#render canvas {
+  /*position: absolute;
+  top: 60px;
+  left: 20px;*/
+  z-index: 1;
+}
+#render i.played{
+  cursor: pointer;
+}
+#videol {
+  -o-transform : scaleX(-1);
+  -webkit-transform : scaleX(-1);
+  transform : scaleX(-1);
+  -ms-filter : fliph; /*IE*/
+  filter : fliph; /*IE*/
+  /*position: absolute;*/
+  top: 0px;
+  left: 0px;
+  /*display: none;*/
+}
+#container {
+  position : relative;
+  width : 370px;
+}
+/*button#download {
+    position: absolute;
+    right: 125px;
+    z-index: 99;
+}
+button#share-fb {
+    position: absolute;
+    right: 125px;
+    top: 103px;
+    z-index: 99;
+
+}
+#share-tw {
+    position: absolute;
+    right: 125px;
+    top:129px;
+    z-index: 99;
+
+}*/
+#result {
+  position: relative;
+}
+
+#debug {
+	/*position: absolute;*/
+	top: 0px;
+	left: 0px;
+}
+
+#tools, #panels{
+  position: absolute;
+  top: 0;
+  left: 512px;
+}
+
+#tools label{
+  width: 82px;
+  display: inline-block;
+}
+#tools input[type='range']{
+  width: 200px;
+  display: inline-block;
+  margin: 10px 0 0 10px;
+}
+/*#chooseVideo, #chooseAccessories{
+  width: 645px;
+  height: 486px;
+}
+#chooseVideo video, #chooseAccessories canvas{
+  width: 320px;
+  height: 240px;
+}
+#chooseAccessories canvas{
+  background-color: black;
+}*/
+#chooseVideo i.active, #chooseAccessories i.active{
+  display: none;
+}
+canvas {
+  image-rendering: optimizeSpeed;             /* Older versions of FF          */
+  image-rendering: -moz-crisp-edges;          /* FF 6.0+                       */
+  image-rendering: -webkit-optimize-contrast; /* Safari                        */
+  image-rendering: -o-crisp-edges;            /* OS X & Windows Opera (12.02+) */
+  image-rendering: pixelated;                 /* Awesome future-browsers       */
+  -ms-interpolation-mode: nearest-neighbor;   /* IE                            */
+}
+canvas#preview{
+  background-color: #d8f2f1;
+}
+#share-tw a{
+  height: 100%;
+  display: block;
+}

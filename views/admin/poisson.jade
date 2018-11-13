@@ -1,0 +1,54 @@
+extends layout
+block content
+  canvas#base
+  canvas#mask
+  canvas#result
+block script
+  script.
+    var base_size = {width:150, height:150}; // Size of all Canvas
+    var img_base;
+    var base_canvas, src_canvas, mask_canvas, result_canvas;
+    var base_ctx, mask_ctx, result_ctx;    
+    var blend_position_offset = {x:0, y:0};
+    function init(c){
+      base_ctx = document.getElementById('base').getContext('2d')
+      mask_ctx = document.getElementById('mask').getContext('2d')
+      result_ctx = document.getElementById('result').getContext('2d')
+      img_base = new Image()
+      img_base.onload = function(){
+        base_ctx.canvas.width = 512
+        base_ctx.canvas.height = 512
+        base_ctx.drawImage(this,-160,-90)
+        img_mask = new Image()
+        img_mask.onload = function(){
+          mask_ctx.canvas.width = this.width 
+          mask_ctx.canvas.height = this.height
+          mask_ctx.drawImage(this,-160,-90)
+          result_ctx.canvas.width = this.width 
+          result_ctx.canvas.height = this.height
+          base_size = {
+            width: base_ctx.canvas.width,
+            height: base_ctx.canvas.height
+          }
+          c();
+        }
+        img_mask.src = '/video/images/face-female.png?'+new Date();
+      }
+      img_base.src = '/userfiles/579587c0b8241fa0276356f8/face-1473237710519.png';//'/video/images/cap13_edit/0.040724.png';
+      
+    }
+    function testBlend(){
+        var base_pixels = base_ctx.getImageData(0, 0, base_size.width, base_size.height);
+        var mask_pixels = mask_ctx.getImageData(0, 0, base_size.width, base_size.height);
+        for(var y=1; y<base_size.height-1; y++) {
+          for(var x=1; x<base_size.width-1; x++) {
+            var p = (y*base_size.width+x)*4;
+            base_pixels.data[p+3] = mask_pixels.data[p+3];
+          }
+        }
+        result_ctx.putImageData(base_pixels, 0, 0);
+      
+    }
+    setInterval(function(){
+      init(testBlend);
+    },1000)

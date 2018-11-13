@@ -1,0 +1,61 @@
+extends layout
+block content
+  .jumbotron
+    h1 Welcome ...
+    pre.
+      -----------------------------------------
+      CLIENT-SIDE
+      -----------------------------------------
+      personalize.coffee -- Configuration
+      - upload or webcam DONE
+      - face detection DONE
+      - head mouth editor DONE
+      - webcam functionallity DONE 
+      - #BUG5 webcam not working on firefox, deprecated api
+      - #BUG1 touch mouth not work FIXED Not Tested
+      - #BUG2 position cam/video img result missed FIXED
+      - preview animation mouth DONE
+      - back step functionallity:
+          a. moving head and mouth editor DONE
+          b. replace head / mouth image DONE
+      - text editor 
+      
+      max.coffee -- Player
+      - choose accessories DONE
+      - choose video DONE
+      - get json data DONE
+      - sync timeline animation with video DONE
+      - animation head & mouth DONE
+      - play other user gallery DONE
+      - download & share FB TW DONE
+      - add text at last video 0%
+      gallery.coffee / player only MOVE ON max.coffee
+      
+      -----------------------------------------
+      SERVER-SIDE
+      -----------------------------------------
+      lib/upload.js
+      - create upload helper DONE
+      
+      developer -> generate.js
+      - generate canvas accessories to img squence 
+        - bisa memilih script yg mau dipakai DONE
+        - bisa milih frame per second DONE
+        - crop area di menit tertentu CANCELED
+        - current_time sebagai filename DONE
+      - convert video to img squence: 
+        - install matador buat monitoring job manager process DONE
+        - job manager with cluster DONE
+        - info progress dan complete di client site DONE 
+        - #BUG3 submit berkali2 blum ada check current job. FIXED
+        - #BUG6 extract image from video last image not created 0% (not match w/ json)
+      - track face and mouth position REAL VIDEO?
+      - generate file json REAL VIDEO?
+      - add link to job manager 0%
+       
+      download.js
+      - use node-canvas create image of all layer DONE
+      - render video using ffmpeg DONE 
+      - add mp3 / ogg Audio DONE
+      - socket.io / async task DONE
+      - #BUG4 MP4(created) unplayable on mobile device. 

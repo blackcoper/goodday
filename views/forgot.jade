@@ -1,0 +1,42 @@
+
+extends layout
+
+block content
+	div.wrapper-content.frame
+		
+		//wrapper colud left top
+		div.wrapper-cloud-left-top
+			
+		//wrapper-bird
+		div.wrapper-bird
+			
+		//wrapper colud left top
+		div.wrapper-cloud-left-bottom
+			
+		div.wrapper-frame-absolute.syarat-ketentuan
+			div.wrapper-syarat-ketentuan
+				div.form-reset
+					
+					form(method="POST")
+						div.box
+							p Oh no! Kamu lupa password 
+								br 
+								| Jangan panik! Masukkin email mu di sini.	
+						div.box
+							input(type="text", name="email", placeholder="Your Email", class="text-input")
+						div.box
+							input(type="hidden", name="_csrf", value="#{_csrf}")
+							button(type="submit").btn-yellow send
+						div.box.message
+							if errors
+								each error in errors
+									p=error.msg
+
+		//wrapper cloud right center
+		div.wrapper-cloud-right-center
+			
+		//wrapper good day
+		div.wrapper-good-day
+			img(src="img/good-day.png")
+				
+	div#footer

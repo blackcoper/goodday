@@ -1,0 +1,93 @@
+extends layout
+
+block content
+	div.panel.panel-default
+		ul.nav.nav-tabs.nav-justified
+			li(role="presentation")
+				a(href="#{site_url()}/#{admin_url}/report") Users
+			li.active(role="presentation")
+				a(href="javascript:void(0);") Experiments 
+		div.panel-body
+			form(method='post' action='#{site_url()}/#{admin_url}/report')
+				input(type='hidden', name='_csrf', value='#{_csrf}')
+				div.row
+					div.col-md-4
+						div.form-group
+							label Date From
+							input.form-control(type="text" id="date_from" name="date_from" value=filter.date_from?filter.date_from:'', placeholder="Date From")
+					div.col-md-4
+						div.form-group
+							label Date To
+							input.form-control(type="text" id="date_to" name="date_to" value=filter.date_to?filter.date_to:'', placeholder="Date To")
+				div.btn-group
+					button#filter.btn.btn-primary(type='submit')
+						span.glyphicon.glyphicon-exclamation-filter(aria-hidden="true")
+						|Filter
+					//if filter.date_from || filter.date_to
+						a#clear.btn.btn-default(type='button', href='/#{admin_url}/report') 
+							span.glyphicon.glyphicon-exclamation-download-alt(aria-hidden="true")
+							|Clear Filter
+					button#export.btn.btn-success(type='button') 
+						span.glyphicon.glyphicon-exclamation-download-alt(aria-hidden="true")
+						|Export CSV
+			br
+			table.table.table-striped.table-bordered
+				thead
+					tr
+						td No
+						td Name
+						td created
+						td gender
+						td video
+						td accessories
+						td message
+				tbody
+					- var x=exps.page*exps.limit-exps.limit+1;
+					- var month = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+					if exps.length
+						each val in exps
+							- var date = new Date(val.datecreated);
+							- var list_video = ['India','Coachella ','HipHop','Jepang']
+							- var list_effect = ['confetti','confetti2','plasma','fireworks']
+							tr
+								td= x++
+								td= val.user.name
+								td= date.getDate()+' '+month[date.getMonth()]+' '+date.getFullYear()+' '+date.getHours()+':'+date.getMinutes()
+								td= val.options.gender
+								td= list_video[val.options.video]
+								td= list_effect[val.options.accessories]
+								td!= val.options.message.length > 50 ? val.options.message.substring(0,50)+ ' ...' : val.options.message
+					else
+						tr
+							td(colspan=7) Oopps no users found
+			if exps.pages>1
+				nav
+					ul.pagination
+						if exps.page-1!=0
+							li
+								a(href="#{site_url()}/#{admin_url}/report_exp/"+(exps.page-1), aria-label="Previous")
+									span(aria-hidden="true") &laquo;
+						-var x=1
+						while x<=exps.pages
+							li(class={active: exps.page == x})
+								a(href="#{site_url()}/#{admin_url}/report_exp/"+x)= x++
+						-var next = parseInt(exps.page)+1;
+						if next<=exps.pages
+							li
+								a(href="#{site_url()}/#{admin_url}/report_exp/"+next, aria-label="Next")
+									span(aria-hidden="true") &raquo;
+block script
+	script.
+		$(document).ready(function(){
+			$('#date_from').datepicker({format: "yyyy-mm-dd"});
+			$('#date_to').datepicker({format: "yyyy-mm-dd"});
+
+			$('#export').on('click', function(){
+				var date_from = $('#date_from').val();
+				var date_to = $('#date_to').val();
+				var url = '#{site_url()}/#{admin_url}/report_exp/export?date_from='+date_from+'&date_to='+date_to;
+
+				window.location.href = url;
+			});
+		});

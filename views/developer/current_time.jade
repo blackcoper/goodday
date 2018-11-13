@@ -1,0 +1,201 @@
+extends layout
+block style
+  style.
+    a.list-group-item, button.list-group-item{
+      width:25%;
+      float:left;
+    }
+    @media screen and (max-width: 1024px) {
+      a.list-group-item, button.list-group-item{
+        width:33%;
+        float:left;
+      }
+    }
+    @media screen and (max-width: 615px) {
+      a.list-group-item, button.list-group-item{
+        width:50%;
+        float:left;
+      }
+    }
+block content
+  ul#extract_video_nav.nav.nav-tabs.nav-justified
+    li.active(role="presentation")
+      a(href="#") Time
+    li(role="presentation")
+      a(href="#") extract 
+      
+  div.panel.panel-default
+    #tab0.panel-body
+      .page-header
+        h1 Generate 
+          small current time each frame
+      div.input-group.input-group-lg
+        span.input-group-addon#basic-addon2 Frame Per Second :
+        input#basic-fps.form-control(type="text",aria-describedby="basic-addon2")
+      br
+      div.input-group.input-group-lg
+        span.input-group-addon#basic-addon3 video url #{site_url()}
+        input#basic-url.form-control(type="text",aria-describedby="basic-addon3")
+      br
+      div.embed-responsive.embed-responsive-16by9
+        video#vid(src="/video/cap13_edit.mp4")
+      #resultcollectTime.hidden
+        br
+        div.input-group
+          span#result-path.input-group-addon path :
+          input#result-filename.form-control(type="text",aria-describedby="result-path")
+      br
+      div 
+        button.btn.btn-success.btn-lg#collectTime(type="button",onclick="get_currentTime()") get current time
+    #tab1.panel-body.hidden
+      .page-header
+        h1 screenshots video 
+          small each current time given (job manager and cluster)
+      .progress
+        .progress-bar.progress-bar-info.progress-bar-striped.active(role='progressbar', aria-valuenow='0', aria-valuemin='0', aria-valuemax='100', style="min-width: 2em;") 0%
+      .input-group.input-group-lg
+        .input-group-btn
+          button#count_files.btn.btn-warning.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') 
+            | List Files 
+            span.badge ~
+            //- span.caret
+          #list_json.dropdown-menu.list-group
+        input#file-json.form-control(type="text")
+      br
+      div.input-group.input-group-lg
+        span.input-group-addon#basic-addon3 video url #{site_url()}
+        input#video-url.form-control(type="text",aria-describedby="basic-addon3")
+      br
+      div 
+        button.btn.btn-success.btn-lg#start_convert(type="button",onclick="start_convert()") CONVERT
+block script
+  script(type='text/javascript').
+    var FPS = 30;
+    var count = [];
+    var tmp = -1;
+    var collecting = false;
+    var get_currentTime = function(){
+      if(collecting)return;
+      collecting = true;
+      $('#collectTime').removeClass('btn-success').addClass('btn-danger disabled').html('Recording ...').attr('disabled','disabled')
+      var vid = $('#vid').get(0)
+      var name = /([^\/]+)(?=\.\w+$)/ig.exec($('#basic-url').val())
+      if(name){
+        t_render = new FpsCtrl(FPS, function(){
+          if(vid.ended){
+            t_render.pause();
+            $.ajax({
+              url:'/developer/generate/current_time/json_time',
+              type:'PUT',
+              data:{name:name[0],time:JSON.stringify(count),_csrf:_csrf},
+              dataType:'json',
+              success:function(e){
+                $('#resultcollectTime').removeClass('hidden');                
+                $('#result-path').html('path : '+e.path.dir);
+                $('#result-filename').val(e.path.base);
+                $('#extract_video_nav a:eq(1)').trigger('click');
+                get_time_json();
+              },
+              complete:function(e){
+                $('#collectTime').removeClass('btn-danger disabled').addClass('btn-success').html('get current time').removeAttr('disabled');
+                collecting = false;
+              }
+            })
+          }
+          if(tmp != vid.currentTime && tmp != 0 && tmp != vid.duration){
+            tmp = vid.currentTime;
+            count.push(tmp);
+          }
+        })
+        t_render.start();
+      }
+      vid.loop = false;
+      vid.play();
+    }
+    var get_time_json = function(){
+      $.ajax({
+        url:'/developer/generate/current_time/json_time',
+        type:'GET',
+        dataType:'json',
+        success:function(e){
+          $('#list_json').html('')
+          if(typeof(e.files)!= 'undefined'){
+            $('#count_files span').html(e.files.length)
+            for(var i in e.files){
+              $('#list_json').append('<a class="list-group-item" href="javascript:void(0);">'+e.files[i]+'</a>')
+            }
+            $('#list_json a').on('click',function(){
+              $('#file-json').val($(this).html())
+            })
+            init();
+          }
+        }
+      })
+    }
+    var start_convert = function(){
+      $('#file-json').parent().removeClass('has-error')
+      $('#video-url').parent().removeClass('has-error')
+      $('#start_convert').removeClass('btn-success').addClass('btn-danger disabled').html('Converting ...').attr('disabled','disabled')
+      $('.progress-bar').css('width', 0+'%').attr('aria-valuenow', 0).html('0%');
+      $('.progress-bar').removeClass('progress-bar-success progress-bar-danger').addClass('progress-bar-info')
+      $.ajax({
+        url:'/developer/generate/video_to_images',
+        type:'POST',
+        dataType:'json',
+        data:{socket_id:ioadmin.nsp+'#'+ioadmin.id,json:$('#file-json').val(),video:$('#video-url').val()  ,_csrf:_csrf},
+        success:function(e){
+          if(e.error){
+            if(e.error == 'json file not found.'){
+              $('#file-json').parent().addClass('has-error')
+            }
+            if(e.error == 'video file not found.'){
+              $('#video-url').parent().addClass('has-error')
+            }
+          }
+        }
+      })
+    }
+    function init(){
+      $('.dropdown-menu.list-group').each(function(){
+        $(this).css('width',$(this).parents('.input-group').width())
+      })
+    }
+    $(document).ready(function(){
+      init();
+      $(window).resize(init);
+      $('#basic-fps').val(FPS).on('change',function(){
+        FPS = parseFloat($(this).val())
+      })
+      $('#basic-url').val($('#vid').attr('src')).on('change',function(){
+        $('#vid').attr('src',$(this).val())
+      })
+      $('#extract_video_nav a').click(function(e){
+        e.preventDefault();
+        $('#extract_video_nav li.active').removeClass('active');
+        $(this).parent().addClass('active');
+        _i = $('#extract_video_nav a').index(this);
+        if(_i == 1 ){
+          get_time_json();
+        }
+        $('.panel .panel-body').addClass('hidden');
+        $('#tab'+_i).removeClass('hidden');
+        return false;
+      })
+      io_ready(function(){
+        ioadmin.on('client_extractVideo_progress',function(e){        
+          $('.progress-bar').css('width', e+'%').attr('aria-valuenow', e).html(Math.ceil(parseFloat(e))+'%')    
+        })
+        ioadmin.on('client_extractVideo_completed',function(e){
+          $('.progress-bar').removeClass('progress-bar-info progress-bar-danger').addClass('progress-bar-success')
+          $('#start_convert').removeClass('btn-danger disabled').addClass('btn-success').html('CONVERT').removeAttr('disabled');
+        })
+        ioadmin.on('client_extractVideo_failed',function(e){
+          $('.progress-bar').removeClass('progress-bar-info progress-bar-success').addClass('progress-bar-danger')
+          $('#start_convert').removeClass('btn-danger disabled').addClass('btn-success').html('CONVERT').removeAttr('disabled');
+        })
+        ioadmin.on('whisper',function(e){
+          console.log(e);
+        })
+      });
+    })
+    
