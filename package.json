@@ -28,7 +28,7 @@
     "helmet": "^2.1.1",
     "jade": "~1.11.0",
     "mongodb": "^2.1.18",
-    "mongoose": "^4.4.20",
+    "mongoose": "^5.8.1",
     "mongoose-paginate": "^5.0.0",
     "morgan": "~1.6.1",
     "nodemailer": "^2.5.0",
